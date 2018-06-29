@@ -27,6 +27,52 @@ TEST(ArgusCamera, Info0ValidConfig) {
   ASSERT_EQ(0, info);
 }
 
+TEST(ArgusCamera, ReadReturnsSuccessStatus) {
+  auto config = ArgusCameraConfig::DEFAULT_DEVKIT_CONFIG();
+  int info;
+  std::unique_ptr<ArgusCamera> camera;
+  camera.reset(ArgusCamera::createArgusCamera(config, &info));
+
+  uint8_t data[640 * 480 * 4];
+  int status = camera->read(data);
+
+  ASSERT_EQ(0, status);
+}
+
+TEST(ArgusCamera, ReadSetsAlpha255) {
+  auto config = ArgusCameraConfig::DEFAULT_DEVKIT_CONFIG();
+  int info;
+  std::unique_ptr<ArgusCamera> camera;
+  camera.reset(ArgusCamera::createArgusCamera(config, &info));
+
+  uint8_t data[640 * 480 * 4];
+  int status = camera->read(data);
+
+  for (int i = 0; i < 640 * 480; i++) {
+    ASSERT_EQ(255, data[i * 4 + 3]);
+  }
+}
+
+// may fail if all white image
+TEST(ArgusCamera, ReadSetsSomeNon255) {
+  auto config = ArgusCameraConfig::DEFAULT_DEVKIT_CONFIG();
+  int info;
+  std::unique_ptr<ArgusCamera> camera;
+  camera.reset(ArgusCamera::createArgusCamera(config, &info));
+
+  uint8_t data[640 * 480 * 4];
+  int status = camera->read(data);
+
+  bool all_255 = true;
+  for (int i = 0; i < 640 * 480 * 4; i++) {
+    if(255 != data[i]) {
+      all_255 = false;
+    }
+  }
+
+  ASSERT_FALSE(all_255);
+}
+
 int main(int argc, char *argv[])
 {
   testing::InitGoogleTest(&argc, argv);
