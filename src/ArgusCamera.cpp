@@ -276,9 +276,11 @@ int ArgusCamera::read(uint8_t *data)
   // copy to destination (block linear)
   auto plane = nativeCaptureBuffer->planes[0];
   uint32_t rowBytes = plane.fmt.bytesperpixel * plane.fmt.width;
+  uint8_t *srcData = plane.data;
   for (uint32_t i = 0; i < plane.fmt.height; i++) {
-    memcpy(data, plane.data, rowBytes);
-    data += rowBytes;
+    memcpy(data, srcData, rowBytes);
+    data += plane.fmt.stride;
+    srcData += plane.fmt.stride;
   }
 
   NvBufferDestroy(fd);
