@@ -8,8 +8,12 @@
 #include "EGLStream/EGLStream.h"
 #include "NvVideoConverter.h"
 
+#define WIDTH_IDX 0
+#define HEIGHT_IDX 1
+
 class ArgusCameraConfig
 {
+public:
   uint32_t mDeviceId;
   std::vector<float> mSourceClipRect;
   std::vector<uint32_t> mStreamResolution;

@@ -22,3 +22,13 @@ install(TARGETS argus_camera
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib/static)
+
+
+# TESTS
+
+if (BUILD_TESTS)
+  find_package(GTest REQUIRED)
+
+  add_executable(TestArgusCamera test/TestArgusCamera.cpp)
+  target_link_libraries(TestArgusCamera gtest TegraMM argus_camera)
+endif()
