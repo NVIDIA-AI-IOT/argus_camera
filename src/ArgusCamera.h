@@ -11,9 +11,22 @@
 #define WIDTH_IDX 0
 #define HEIGHT_IDX 1
 
+#define ONE_SECOND_NANOS 1000000000
 class ArgusCameraConfig
 {
 public:
+
+  static ArgusCameraConfig DEFAULT_DEVKIT_CONFIG() {
+    ArgusCameraConfig c;
+    c.mDeviceId = 0;
+    c.mSourceClipRect = { 0.0, 0.0, 1.0, 1.0 };
+    c.mStreamResolution = { 640, 480 };
+    c.mVideoConverterResolution = { 640, 480 };
+    c.mFrameDurationRange = { ONE_SECOND_NANOS / 30, ONE_SECOND_NANOS / 30 }; // 30fps
+    c.mSensorMode = 0;
+    return c;
+  };
+
   uint32_t mDeviceId;
   std::vector<float> mSourceClipRect;
   std::vector<uint32_t> mStreamResolution;

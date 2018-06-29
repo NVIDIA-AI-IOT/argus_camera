@@ -122,6 +122,8 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
     }
     return nullptr;
   }
+  
+  iRequest->enableOutputStream(camera->mStream.get());
 
   status = iCaptureSession->repeat(request.get());
   if (Argus::STATUS_OK != status) {
@@ -163,6 +165,10 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
       *info = 14;
     }
     return nullptr;
+  }
+
+  if (info) {
+    *info = 0;
   }
 
   return camera.release();
