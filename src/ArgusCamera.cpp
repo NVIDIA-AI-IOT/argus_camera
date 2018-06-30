@@ -273,13 +273,13 @@ int ArgusCamera::read(uint8_t *data)
   }
   mVideoConverter->output_plane.dqBuffer(v4l2_buf, NULL, NULL, 1);
 
-  // copy to destination (block linear)
+  // copy to destination (pitched -> block linear)
   auto plane = nativeCaptureBuffer->planes[0];
   uint32_t rowBytes = plane.fmt.bytesperpixel * plane.fmt.width;
   uint8_t *srcData = plane.data;
   for (uint32_t i = 0; i < plane.fmt.height; i++) {
     memcpy(data, srcData, rowBytes);
-    data += plane.fmt.stride;
+    data += rowBytes;
     srcData += plane.fmt.stride;
   }
 

@@ -4,8 +4,8 @@
 %include <std_vector.i>
 %include <stdint.i>
 
-%typemap(in) uint8_t * {
-  $1 = (uint8_t *) PyInt_AsLong($input);
+%typemap(in) uint8_t* {
+  $1 = (uint8_t*) PyInt_AsLong($input);
 }
 
 namespace std {
