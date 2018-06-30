@@ -80,7 +80,7 @@ C++ Usage
 
 int main() {
   
-  ArgusCameraConfig config = ArgusCameraConfig::createDefaultCameraConfig();
+  ArgusCameraConfig config = ArgusCameraConfig::createDefaultDevkitCameraConfig();
   ArgusCamera *camera = ArgusCamera::createArgusCamera(config);
   
   unsigned char *data;
