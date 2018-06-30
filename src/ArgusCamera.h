@@ -27,12 +27,34 @@ public:
     return c;
   };
 
+  void setDeviceId(uint32_t deviceId) { mDeviceId = deviceId; };
+  uint32_t getDeviceId() { return mDeviceId; };
+
+  void setSourceClipRect(std::vector<float> sourceClipRect) { mSourceClipRect = sourceClipRect; };
+  std::vector<float> getSourceClipRect() { return mSourceClipRect; };
+
+  void setStreamResolution(std::vector<uint32_t> streamResolution) { mStreamResolution = streamResolution; };
+  std::vector<uint32_t> getStreamResolution() { return mStreamResolution; };
+
+  void setVideoConverterResolution(std::vector<uint32_t> videoConverterResolution) { mVideoConverterResolution = videoConverterResolution; };
+  std::vector<uint32_t> getVideoConverterResolution() { return mVideoConverterResolution; };
+
+  void setFrameDurationRange(std::vector<uint64_t> frameDurationRange) { mFrameDurationRange = frameDurationRange; };
+  std::vector<uint64_t> getFrameDurationRange() { return mFrameDurationRange; };
+
+  void setSensorMode(uint32_t sensorMode) { mSensorMode = sensorMode; };
+  uint32_t getSensorMode() { return mSensorMode; };
+
   uint32_t mDeviceId;
   std::vector<float> mSourceClipRect;
   std::vector<uint32_t> mStreamResolution;
   std::vector<uint32_t> mVideoConverterResolution;
   std::vector<uint64_t> mFrameDurationRange;
   uint32_t mSensorMode;
+
+  std::vector<uint32_t> getOutputShape() {
+    return { mVideoConverterResolution[HEIGHT_IDX], mVideoConverterResolution[WIDTH_IDX], getNumChannels() };
+  };
 
   size_t getOutputSizeBytes();
   uint32_t getNumChannels();
@@ -43,7 +65,7 @@ class ArgusCamera
 public:
   static ArgusCamera *createArgusCamera(const ArgusCameraConfig &config, int *info=nullptr);
   ~ArgusCamera();
-  int read(uint8_t *rgba);
+  int read(uint8_t *data);
 
 private:
   ArgusCameraConfig mConfig;
