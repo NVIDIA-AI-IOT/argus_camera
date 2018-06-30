@@ -15,6 +15,28 @@ Cameras
 |----------------------|--------------|-------------|
 | Jetson DevKit Camera |  TBD         |  TBD        |
 
+Setup
+-----
+
+Ensure that you have flashed your Jetson to include the Tegra Multimedia API. Then, simply clone this repository and enter the following into a terminal.
+
+```bash
+cd argus_camera
+mkdir build
+cd build
+cmake ..
+make -j4
+sudo make install
+cd ..
+sudo python setup.py install
+```
+
+If you are using Python 3 you replace the last command with
+
+```bash
+sudo python3 setup.py install
+```
+
 Python Usage
 ------------
 
