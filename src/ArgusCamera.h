@@ -16,7 +16,7 @@ class ArgusCameraConfig
 {
 public:
 
-  static ArgusCameraConfig DEFAULT_DEVKIT_CONFIG() {
+  static ArgusCameraConfig createDefaultDevkitConfig() {
     ArgusCameraConfig c;
     c.mDeviceId = 0;
     c.mSourceClipRect = { 0.0, 0.0, 1.0, 1.0 };

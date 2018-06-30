@@ -9,7 +9,7 @@ TEST(TestGTest, Hello) {
 }
 
 TEST(ArgusCamera, NonNullValidConfig) {
-  auto config = ArgusCameraConfig::DEFAULT_DEVKIT_CONFIG();
+  auto config = ArgusCameraConfig::createDefaultDevkitConfig();
 
   std::unique_ptr<ArgusCamera> camera;
   camera.reset(ArgusCamera::createArgusCamera(config));  
@@ -18,7 +18,7 @@ TEST(ArgusCamera, NonNullValidConfig) {
 }
 
 TEST(ArgusCamera, Info0ValidConfig) {
-  auto config = ArgusCameraConfig::DEFAULT_DEVKIT_CONFIG();
+  auto config = ArgusCameraConfig::createDefaultDevkitConfig();
 
   int info;
   std::unique_ptr<ArgusCamera> camera;
@@ -28,7 +28,7 @@ TEST(ArgusCamera, Info0ValidConfig) {
 }
 
 TEST(ArgusCamera, ReadReturnsSuccessStatus) {
-  auto config = ArgusCameraConfig::DEFAULT_DEVKIT_CONFIG();
+  auto config = ArgusCameraConfig::createDefaultDevkitConfig();
   int info;
   std::unique_ptr<ArgusCamera> camera;
   camera.reset(ArgusCamera::createArgusCamera(config, &info));
@@ -40,7 +40,7 @@ TEST(ArgusCamera, ReadReturnsSuccessStatus) {
 }
 
 TEST(ArgusCamera, ReadSetsAlpha255) {
-  auto config = ArgusCameraConfig::DEFAULT_DEVKIT_CONFIG();
+  auto config = ArgusCameraConfig::createDefaultDevkitConfig();
   int info;
   std::unique_ptr<ArgusCamera> camera;
   camera.reset(ArgusCamera::createArgusCamera(config, &info));
@@ -55,7 +55,7 @@ TEST(ArgusCamera, ReadSetsAlpha255) {
 
 // may fail if all white image
 TEST(ArgusCamera, ReadSetsSomeNon255) {
-  auto config = ArgusCameraConfig::DEFAULT_DEVKIT_CONFIG();
+  auto config = ArgusCameraConfig::createDefaultDevkitConfig();
   int info;
   std::unique_ptr<ArgusCamera> camera;
   camera.reset(ArgusCamera::createArgusCamera(config, &info));
