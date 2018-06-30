@@ -86,7 +86,7 @@ int main() {
   unsigned char *data;
   data = (unsigned char *) malloc(config.getOutputSizeBytes());
   
-  camera.read(data);
+  camera->read(data);
   
   free(data);
   delete camera;
