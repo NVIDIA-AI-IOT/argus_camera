@@ -76,8 +76,8 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
 
   // create stream settings
   auto streamSettings = UniqueObj<OutputStreamSettings>(iCaptureSession->createOutputStreamSettings(NULL));
-  auto iStreamSettings = interface_cast<IOutputStreamSettings>(streamSettings);
-  if (!iStreamSettings) {
+  auto iOutputStreamSettings = interface_cast<IOutputStreamSettings>(streamSettings);
+  if (!iOutputStreamSettings) {
     if (info) {
       *info = 6; // failed to create stream settings
     }
@@ -85,13 +85,13 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
   }
 
   // set stream pixel format and resolution
-  iStreamSettings->setPixelFormat(Argus::PIXEL_FMT_YCbCr_420_888);
+  iOutputStreamSettings->setPixelFormat(Argus::PIXEL_FMT_YCbCr_420_888);
   auto evenResolution = Argus::Size2D<uint32_t>(
     ROUND_UP_EVEN(camera->mConfig.mStreamResolution[WIDTH_IDX]),
     ROUND_UP_EVEN(camera->mConfig.mStreamResolution[HEIGHT_IDX])
   );
-  iStreamSettings->setResolution(evenResolution);
-  iStreamSettings->setMetadataEnable(false);
+  iOutputStreamSettings->setResolution(evenResolution);
+  iOutputStreamSettings->setMetadataEnable(false);
 
   // create stream
   camera->mStream = UniqueObj<OutputStream>(iCaptureSession->createOutputStream(streamSettings.get(), &status));
@@ -122,9 +122,66 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
     }
     return nullptr;
   }
-  
+
+  // enable output stream
   iRequest->enableOutputStream(camera->mStream.get());
 
+  // configure source settings in request
+  // 1. set sensor mode
+  auto iCameraProperties = interface_cast<ICameraProperties>(cameraDevice);
+  vector<SensorMode*> sensorModes;
+  status = iCameraProperties->getAllSensorModes(&sensorModes);
+  if (Argus::STATUS_OK != status ||
+      camera->mConfig.getSensorMode() >= sensorModes.size()) {
+    if (info) {
+      *info = 15;
+    }
+    return nullptr;
+  }
+  auto iSourceSettings = interface_cast<ISourceSettings>(iRequest->getSourceSettings());
+  status = iSourceSettings->setSensorMode(sensorModes[camera->mConfig.getSensorMode()]);
+  if (Argus::STATUS_OK != status) {
+    if (info) {
+      *info = 18;
+    }
+    return nullptr;
+  }
+
+  // 2. set frame duration
+  status = iSourceSettings->setFrameDurationRange(Argus::Range<uint64_t>(
+    camera->mConfig.getFrameDurationRange()[0],
+    camera->mConfig.getFrameDurationRange()[1]
+  ));
+  if (Argus::STATUS_OK != status) {
+    if (info) {
+      *info = 19;
+    }
+    return nullptr;
+  }
+  
+  // configure stream settings
+  auto iStreamSettings = interface_cast<IStreamSettings>(iRequest->getStreamSettings(camera->mStream.get()));
+  if (!iStreamSettings) {
+    if (info) {
+      *info = 16;
+    }
+    return nullptr;
+  }
+  // set stream resolution
+  status = iStreamSettings->setSourceClipRect(Argus::Rectangle<float>(
+    camera->mConfig.getSourceClipRect()[0],
+    camera->mConfig.getSourceClipRect()[1],
+    camera->mConfig.getSourceClipRect()[2],
+    camera->mConfig.getSourceClipRect()[3]
+  ));
+  if (Argus::STATUS_OK != status) {
+    if (info) {
+      *info = 17;
+    }
+    return nullptr;
+  }
+
+  // start repeating capture request
   status = iCaptureSession->repeat(request.get());
   if (Argus::STATUS_OK != status) {
     if (info) {
