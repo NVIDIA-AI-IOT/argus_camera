@@ -4,14 +4,10 @@
 #include <vector>
 #include <memory>
 
-#include "Argus/Argus.h"
-#include "EGLStream/EGLStream.h"
-#include "NvVideoConverter.h"
-
 #define WIDTH_IDX 0
 #define HEIGHT_IDX 1
-
 #define ONE_SECOND_NANOS 1000000000
+
 class ArgusCameraConfig
 {
 public:
@@ -60,18 +56,11 @@ public:
   uint32_t getNumChannels();
 };
 
-class ArgusCamera
+class IArgusCamera
 {
 public:
-  static ArgusCamera *createArgusCamera(const ArgusCameraConfig &config, int *info=nullptr);
-  ~ArgusCamera();
-  int read(uint8_t *data);
-
-private:
-  ArgusCameraConfig mConfig;
-
-  Argus::UniqueObj<Argus::CaptureSession> mCaptureSession;
-  Argus::UniqueObj<Argus::OutputStream> mStream;
-  Argus::UniqueObj<EGLStream::FrameConsumer> mFrameConsumer;
-  NvVideoConverter *mVideoConverter;
+  static IArgusCamera *createArgusCamera(const ArgusCameraConfig &config, int *info=nullptr);
+  virtual ~IArgusCamera() {};
+  virtual int read(uint8_t *data) = 0;
 };
+

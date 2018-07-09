@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-#include "../src/ArgusCamera.h"
+#include "../src/ArgusCamera.hpp"
 
 TEST(TestGTest, Hello) {
   ASSERT_STREQ("Hello", "Hello");
@@ -11,8 +11,8 @@ TEST(TestGTest, Hello) {
 TEST(ArgusCamera, NonNullValidConfig) {
   auto config = ArgusCameraConfig::createDefaultDevkitConfig();
 
-  std::unique_ptr<ArgusCamera> camera;
-  camera.reset(ArgusCamera::createArgusCamera(config));  
+  std::unique_ptr<IArgusCamera> camera;
+  camera.reset(IArgusCamera::createArgusCamera(config));  
 
   ASSERT_NE(nullptr, camera.get());
 }
@@ -21,8 +21,8 @@ TEST(ArgusCamera, Info0ValidConfig) {
   auto config = ArgusCameraConfig::createDefaultDevkitConfig();
 
   int info;
-  std::unique_ptr<ArgusCamera> camera;
-  camera.reset(ArgusCamera::createArgusCamera(config, &info));  
+  std::unique_ptr<IArgusCamera> camera;
+  camera.reset(IArgusCamera::createArgusCamera(config, &info));  
 
   ASSERT_EQ(0, info);
 }
@@ -30,8 +30,8 @@ TEST(ArgusCamera, Info0ValidConfig) {
 TEST(ArgusCamera, ReadReturnsSuccessStatus) {
   auto config = ArgusCameraConfig::createDefaultDevkitConfig();
   int info;
-  std::unique_ptr<ArgusCamera> camera;
-  camera.reset(ArgusCamera::createArgusCamera(config, &info));
+  std::unique_ptr<IArgusCamera> camera;
+  camera.reset(IArgusCamera::createArgusCamera(config, &info));
 
   uint8_t data[640 * 480 * 4];
   int status = camera->read(data);
@@ -42,8 +42,8 @@ TEST(ArgusCamera, ReadReturnsSuccessStatus) {
 TEST(ArgusCamera, ReadSetsAlpha255) {
   auto config = ArgusCameraConfig::createDefaultDevkitConfig();
   int info;
-  std::unique_ptr<ArgusCamera> camera;
-  camera.reset(ArgusCamera::createArgusCamera(config, &info));
+  std::unique_ptr<IArgusCamera> camera;
+  camera.reset(IArgusCamera::createArgusCamera(config, &info));
 
   uint8_t data[640 * 480 * 4];
   int status = camera->read(data);
@@ -57,8 +57,8 @@ TEST(ArgusCamera, ReadSetsAlpha255) {
 TEST(ArgusCamera, ReadSetsSomeNon255) {
   auto config = ArgusCameraConfig::createDefaultDevkitConfig();
   int info;
-  std::unique_ptr<ArgusCamera> camera;
-  camera.reset(ArgusCamera::createArgusCamera(config, &info));
+  std::unique_ptr<IArgusCamera> camera;
+  camera.reset(IArgusCamera::createArgusCamera(config, &info));
 
   uint8_t data[640 * 480 * 4];
   int status = camera->read(data);

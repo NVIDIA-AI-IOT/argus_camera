@@ -1,13 +1,33 @@
 #include "ArgusCamera.hpp"
 
+#include "Argus/Argus.h"
 #include "EGLStream/NV/ImageNativeBuffer.h"
 #include "nvbuf_utils.h"
 #include "NvBuffer.h"
+#include "EGLStream/EGLStream.h"
+#include "NvVideoConverter.h"
+
 
 #define ROUND_UP_EVEN(x) 2 * ((x + 1) / 2)
 
 using namespace Argus;
 using namespace std;
+
+class ArgusCamera : public IArgusCamera
+{
+public:
+  static ArgusCamera *createArgusCamera(const ArgusCameraConfig &config, int *info=nullptr);
+  ~ArgusCamera();
+  int read(uint8_t *data) override;
+
+private:
+  ArgusCameraConfig mConfig;
+
+  Argus::UniqueObj<Argus::CaptureSession> mCaptureSession;
+  Argus::UniqueObj<Argus::OutputStream> mStream;
+  Argus::UniqueObj<EGLStream::FrameConsumer> mFrameConsumer;
+  NvVideoConverter *mVideoConverter;
+};
 
 uint32_t ArgusCameraConfig::getNumChannels()
 {
@@ -343,4 +363,9 @@ int ArgusCamera::read(uint8_t *data)
   NvBufferDestroy(fd);
 
   return 0;
+}
+
+IArgusCamera * IArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int *info)
+{
+  return (IArgusCamera*) ArgusCamera::createArgusCamera(config, info);
 }
