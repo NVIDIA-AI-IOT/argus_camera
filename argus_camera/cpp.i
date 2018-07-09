@@ -15,7 +15,7 @@ namespace std {
 }
 
 %{
-#include "../src/ArgusCamera.h"
+#include "../src/ArgusCamera.hpp"
 %}
 
-%include "../src/ArgusCamera.h"
+%include "../src/ArgusCamera.hpp"

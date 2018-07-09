@@ -12,16 +12,16 @@ if(EXISTS ${TegraMM_ROOT})
 
   include_directories(${TegraMM_INCLUDE_DIRS})
   link_directories(${TegraMM_LIBRARY_DIRS})
-  add_library(TegraMM SHARED ${TegraMM_COMMON_SOURCES})
-  target_link_libraries(TegraMM ${TegraMM_LIBRARIES})
+  #add_library(tegra_mm SHARED ${TegraMM_COMMON_SOURCES})
+  #target_link_libraries(tegra_mm ${TegraMM_LIBRARIES})
 
-  install(TARGETS TegraMM
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib/static)
+  #  install(TARGETS tegra_mm
+  #    RUNTIME DESTINATION bin
+  #    LIBRARY DESTINATION lib
+  #    ARCHIVE DESTINATION lib/static)
 
 
-  set(TegraMM_LIBRARIES ${TegraMM_LIBRARIES} TegraMM)
+  #set(TegraMM_LIBRARIES ${TegraMM_LIBRARIES} tegra_mm)
 
   set(TegraMM_FOUND TRUE)
 endif()

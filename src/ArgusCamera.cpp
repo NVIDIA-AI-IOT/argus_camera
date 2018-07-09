@@ -1,4 +1,4 @@
-#include "ArgusCamera.h"
+#include "ArgusCamera.hpp"
 
 #include "EGLStream/NV/ImageNativeBuffer.h"
 #include "nvbuf_utils.h"
