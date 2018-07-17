@@ -5,8 +5,8 @@ class ArgusCamera:
 
     def __init__(self, 
         device_id=0, 
-        stream_resolution=(480, 640), 
-        video_converter_resolution=(480, 640),
+        stream_resolution=(640, 480), 
+        video_converter_resolution=(640, 480),
         frame_duration_range=(long(1e9//30), long(1e9//30)),
         source_clip_rect=(0.0, 0.0, 1.0, 1.0),
         sensor_mode=0):
@@ -24,6 +24,6 @@ class ArgusCamera:
         self.camera = IArgusCamera_createArgusCamera(self.config)
 
     def read(self):
-        image = np.empty(list(self.video_converter_resolution) + [self.channels], np.uint8)
+        image = np.empty(list(self.video_converter_resolution)[::-1] + [self.channels], np.uint8)
         self.camera.read(image.ctypes.data)
         return image
