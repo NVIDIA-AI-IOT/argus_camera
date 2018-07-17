@@ -42,62 +42,26 @@ Python Usage
 
 Here we show a simple example to acquire an image from the devkit camera.
 
-```
-import numpy as np
+```python
 import argus_camera
 
-config = argus_camera.ArgusCameraConfig_createDefaultDevkitConfig()
-camera = argus_camera.ArgusCamera_createArgusCamera(config)
-
-image = np.empty(config.getOutputShape(), np.uint8)
-
-camera.read(image.ctypes.data)
+camera = ArgusCamera()
+image = camera.read()
 ```
 
-The configuration can be modified before creating the argus camera by calling several methods.
-
-| Config Method       | Arg Type | Description |
-|---------------------|-------------|----------|
-| setDeviceId         | integer | The camera device index.  |
-| setStreamResolution | tuple or list of integers | The resolution (width, height) in pixels of the intermediate image.  |
-| setVideoConverterResolution | tuple or list of integers | The resolution (width, height) in pixels of the final output image (after resizing).    |
-| setFrameDurationRange | tuple or list of integers | The target frame duration (min, max) in nanoseconds. |
-| setSourceClipRect     | tuple or list of floats | The region to crop the source image before resizing (x0, y0, x1, y1) in normalized image coordinates [0.0, 1.0] |
-| setSensorMode         | integer | The sensor mode (relevant for frame rate). |
-
-For example, to set the resolution to 300x300 pixels.
+The camera can be initialized with different configurations.  For example,
+we can set the output resolution to 300x300 pixels and crop the input to use
+the center of the image.
 
 ```python
-config.setStreamResolution((300, 300))
-config.setVideoConverterResolution((300, 300))
-```
+camera = ArgusCamera(
+  stream_resolution=(300, 300),
+  video_converter_resolution=(300, 300), 
+  source_clip_rect=(0.25, 0.25, 0.75, 0.75),
+)
 
-C++ Usage
----------
+The video converter resolution corresponds to the output resolution.  The stream resolution
+is the resolution the stream is set to before image resizing by the video converter.  For
+simplicity, set both to the same value.
 
-```cpp
-#include "ArgusCamera.h"
-
-int main() {
-  
-  ArgusCameraConfig config = ArgusCameraConfig::createDefaultDevkitCameraConfig();
-  ArgusCamera *camera = ArgusCamera::createArgusCamera(config);
-  
-  unsigned char *data;
-  data = (unsigned char *) malloc(config.getOutputSizeBytes());
-  
-  camera->read(data);
-  
-  free(data);
-  delete camera;
-  return 0;
-}
-  
-```
-
-Similar to the Python API we can modify the config before camera creation.
-
-```cpp
-config.setStreamResolution({300, 300});
-config.setVideoConverterResolution({300, 300});
-```
+For more configuration options type ``help(ArgusCamera)``.

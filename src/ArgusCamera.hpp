@@ -12,17 +12,6 @@ class ArgusCameraConfig
 {
 public:
 
-  static ArgusCameraConfig createDefaultDevkitConfig() {
-    ArgusCameraConfig c;
-    c.mDeviceId = 0;
-    c.mSourceClipRect = { 0.0, 0.0, 1.0, 1.0 };
-    c.mStreamResolution = { 640, 480 };
-    c.mVideoConverterResolution = { 640, 480 };
-    c.mFrameDurationRange = { ONE_SECOND_NANOS / 30, ONE_SECOND_NANOS / 30 }; // 30fps
-    c.mSensorMode = 0;
-    return c;
-  };
-
   void setDeviceId(uint32_t deviceId) { mDeviceId = deviceId; };
   uint32_t getDeviceId() { return mDeviceId; };
 
@@ -55,6 +44,18 @@ public:
   size_t getOutputSizeBytes();
   uint32_t getNumChannels();
 };
+
+ArgusCameraConfig DEFAULT_DEVKIT_CONFIG()
+{
+    ArgusCameraConfig c;
+    c.mDeviceId = 0;
+    c.mSourceClipRect = { 0.0, 0.0, 1.0, 1.0 };
+    c.mStreamResolution = { 640, 480 };
+    c.mVideoConverterResolution = { 640, 480 };
+    c.mFrameDurationRange = { ONE_SECOND_NANOS / 30, ONE_SECOND_NANOS / 30 }; // 30fps
+    c.mSensorMode = 0;
+    return c;
+}
 
 class IArgusCamera
 {

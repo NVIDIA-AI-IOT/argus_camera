@@ -1,1 +1,1 @@
-from .cpp import *
+from .argus_camera import ArgusCamera
