@@ -59,6 +59,7 @@ camera = ArgusCamera(
   video_converter_resolution=(300, 300), 
   source_clip_rect=(0.25, 0.25, 0.75, 0.75),
 )
+```
 
 The video converter resolution corresponds to the output resolution.  The stream resolution
 is the resolution the stream is set to before image resizing by the video converter.  For
