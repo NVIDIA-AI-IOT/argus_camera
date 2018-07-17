@@ -43,7 +43,7 @@ Python Usage
 Here we show a simple example to acquire an image from the devkit camera.
 
 ```python
-import argus_camera
+from argus_camera import ArgusCamera
 
 camera = ArgusCamera()
 image = camera.read()

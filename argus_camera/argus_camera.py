@@ -18,6 +18,7 @@ class ArgusCamera:
         self.config.setStreamResolution(stream_resolution)
         self.config.setVideoConverterResolution(video_converter_resolution)
         self.config.setFrameDurationRange(frame_duration_range)
+        self.config.setSourceClipRect(source_clip_rect)
         self.config.setSensorMode(sensor_mode)
         self.channels = 4
 
