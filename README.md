@@ -6,7 +6,7 @@ the Tegra Multimedia API and the LibArgus.  By using the LibArgus and the Tegra
 Multimedia API we take advantage of hardware accelerated image processing features onboard
 the Jetson.  All images are returned in RGBA format for easy processing.
 
-This may not work for all CSI cameras, but has been tested for those in the table below. 
+Please note that this project experimental and is provided as a convenience for prototyping.  This may not work for all CSI cameras, but has been tested for those in the table below.  
 
 Cameras
 -------
