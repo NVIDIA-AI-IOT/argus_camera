@@ -1,5 +1,6 @@
 import numpy as np
 from .cpp import *
+from past.builtins import long
 
 class ArgusCamera:
 
@@ -8,6 +9,7 @@ class ArgusCamera:
         stream_resolution=(640, 480), 
         video_converter_resolution=(640, 480),
         frame_duration_range=(long(1e9//30), long(1e9//30)),
+        exposure_time_range=(0,999999999),
         source_clip_rect=(0.0, 0.0, 1.0, 1.0),
         sensor_mode=0):
 
@@ -18,6 +20,7 @@ class ArgusCamera:
         self.config.setStreamResolution(stream_resolution)
         self.config.setVideoConverterResolution(video_converter_resolution)
         self.config.setFrameDurationRange(frame_duration_range)
+        self.config.setExposureTimeRange(exposure_time_range)
         self.config.setSourceClipRect(source_clip_rect)
         self.config.setSensorMode(sensor_mode)
         self.channels = 4

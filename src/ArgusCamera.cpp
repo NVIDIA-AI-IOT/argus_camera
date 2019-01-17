@@ -179,6 +179,18 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
     return nullptr;
   }
   
+// 3. set exposure time
+  status = iSourceSettings->setExposureTimeRange(Argus::Range<uint64_t>(
+    camera->mConfig.getExposureTimeRange()[0],
+    camera->mConfig.getExposureTimeRange()[1]
+  ));
+  if (Argus::STATUS_OK != status) {
+    if (info) {
+      *info = 20;
+    }
+    return nullptr;
+  }
+
   // configure stream settings
   auto iStreamSettings = interface_cast<IStreamSettings>(iRequest->getStreamSettings(camera->mStream.get()));
   if (!iStreamSettings) {

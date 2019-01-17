@@ -7,6 +7,8 @@
 #define WIDTH_IDX 0
 #define HEIGHT_IDX 1
 #define ONE_SECOND_NANOS 1000000000
+#define EXPOSURE_DEFAULT_LOW 0 
+#define EXPOSURE_DEFAULT_HIGH 9999999999999
 
 class ArgusCameraConfig
 {
@@ -27,6 +29,9 @@ public:
   void setFrameDurationRange(std::vector<uint64_t> frameDurationRange) { mFrameDurationRange = frameDurationRange; };
   std::vector<uint64_t> getFrameDurationRange() { return mFrameDurationRange; };
 
+  void setExposureTimeRange(std::vector<uint64_t> exposureTimeRange) { mExposureTimeRange = exposureTimeRange; };
+  std::vector<uint64_t> getExposureTimeRange() { return mExposureTimeRange; };
+
   void setSensorMode(uint32_t sensorMode) { mSensorMode = sensorMode; };
   uint32_t getSensorMode() { return mSensorMode; };
 
@@ -35,6 +40,7 @@ public:
   std::vector<uint32_t> mStreamResolution;
   std::vector<uint32_t> mVideoConverterResolution;
   std::vector<uint64_t> mFrameDurationRange;
+  std::vector<uint64_t> mExposureTimeRange;
   uint32_t mSensorMode;
 
   std::vector<uint32_t> getOutputShape() {
@@ -53,6 +59,7 @@ ArgusCameraConfig DEFAULT_DEVKIT_CONFIG()
     c.mStreamResolution = { 640, 480 };
     c.mVideoConverterResolution = { 640, 480 };
     c.mFrameDurationRange = { ONE_SECOND_NANOS / 30, ONE_SECOND_NANOS / 30 }; // 30fps
+    c.mExposureTimeRange = { EXPOSURE_DEFAULT_LOW,EXPOSURE_DEFAULT_HIGH }; 
     c.mSensorMode = 0;
     return c;
 }
