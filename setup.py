@@ -25,5 +25,11 @@ setup(
         author_email='',
         url='https://github.com/NVIDIA-Jetson/argus_camera',
         packages=find_packages(),
-        ext_modules=[argus_camera_cpp]
+        ext_modules=[argus_camera_cpp],
+        install_requires=['future'],
+        entry_points={
+        'console_scripts': [
+            'example = argus_camera.examples.argus_camera_example:main'
+            ]
+        }
 )

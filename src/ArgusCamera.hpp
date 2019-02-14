@@ -7,6 +7,8 @@
 #define WIDTH_IDX 0
 #define HEIGHT_IDX 1
 #define ONE_SECOND_NANOS 1000000000
+#define EXPOSURE_DEFAULT_LOW 0 
+#define EXPOSURE_DEFAULT_HIGH 9999999999999
 
 class ArgusCameraConfig
 {
@@ -27,6 +29,19 @@ public:
   void setFrameDurationRange(std::vector<uint64_t> frameDurationRange) { mFrameDurationRange = frameDurationRange; };
   std::vector<uint64_t> getFrameDurationRange() { return mFrameDurationRange; };
 
+  void setGainRange(std::vector<float> gainRange) { mGainRange = gainRange; };
+  std::vector<float> getGainRange() { return mGainRange; };
+
+  void setExposureCompensation(float ExposureCompensation) { mExposureCompensation = ExposureCompensation; };
+  float getExposureCompensation() { return mExposureCompensation; };
+
+  void setAeLock(bool AeLock) { mAeLock = AeLock; };
+  bool getAeLock() { return mAeLock; };
+
+
+  void setExposureTimeRange(std::vector<uint64_t> exposureTimeRange) { mExposureTimeRange = exposureTimeRange; };
+  std::vector<uint64_t> getExposureTimeRange() { return mExposureTimeRange; };
+
   void setSensorMode(uint32_t sensorMode) { mSensorMode = sensorMode; };
   uint32_t getSensorMode() { return mSensorMode; };
 
@@ -35,6 +50,10 @@ public:
   std::vector<uint32_t> mStreamResolution;
   std::vector<uint32_t> mVideoConverterResolution;
   std::vector<uint64_t> mFrameDurationRange;
+  std::vector<uint64_t> mExposureTimeRange;
+  std::vector<float> mGainRange;
+  bool mAeLock;
+  float mExposureCompensation;
   uint32_t mSensorMode;
 
   std::vector<uint32_t> getOutputShape() {
@@ -53,7 +72,11 @@ ArgusCameraConfig DEFAULT_DEVKIT_CONFIG()
     c.mStreamResolution = { 640, 480 };
     c.mVideoConverterResolution = { 640, 480 };
     c.mFrameDurationRange = { ONE_SECOND_NANOS / 30, ONE_SECOND_NANOS / 30 }; // 30fps
+    c.mExposureTimeRange = { EXPOSURE_DEFAULT_LOW,EXPOSURE_DEFAULT_HIGH };
+    c.mGainRange = {0.0, 300.0};
     c.mSensorMode = 0;
+    c.mExposureCompensation = 0.;
+    c.mAeLock = false;
     return c;
 }
 
